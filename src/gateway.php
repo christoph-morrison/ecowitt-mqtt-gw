@@ -82,7 +82,8 @@ $dict['rain'] = array(
 
 $dict['solar'] = array(
     'uv'        => (int) get_var('uv'),
-    'radiation' => (double) get_var('solarradiation', false, true, 'fc2lx'),
+    'radiation' => (double) get_var('solarradiation', false, true, 'wm2lx'),
+    'power'     => (double) get_Var('solarradiation'),
 );
 
 $dict['station'] = array(
@@ -138,8 +139,8 @@ function get_var(string $key, $source = false, bool $convert = false, string $co
     $return_value = $source[$key];
 
     if ($convert === true) {
-        if ($convert_type === 'fc2lx') {
-            return $return_value * 10.76;
+        if ($convert_type === 'wm2lx') {
+            return $return_value / 0.0079;
         }
 
         if ($convert_type === 'fahrenheit2celsius') {
