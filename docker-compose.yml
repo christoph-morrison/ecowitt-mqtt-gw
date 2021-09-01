@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  ecowitt-mqtt-gw:
+    container_name: ecowitt-mqtt-gw
+    build: .
+    volumes:
+      - ./src:/var/www/html/
+      - ./log:/var/www/html/log
+    ports:
+      - 10001:80
