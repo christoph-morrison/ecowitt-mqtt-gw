@@ -63,8 +63,8 @@ if (array_key_exists('lightning', $source)) {
 
 $dict['wind'] = array(
     'direction' => (double) get_var('winddir'),
-    'speed' => (double) get_var('windspeedmph', false, true, 'mph2kmh'),
-    'gust' => (double) get_var('windgustmph', false, true, 'mph2kmh'),
+    'speed'     => (double) get_var('windspeedmph', false, true, 'mph2kmh'),
+    'gust'      => (double) get_var('windgustmph', false, true, 'mph2kmh'),
 #    'direction_10m_avg' => get_var('winddir_avg10m'),
 #    'speed_10m_avg' => get_var('windspdmph_avg10m', false, true, 'mph2kmh'),
 );
