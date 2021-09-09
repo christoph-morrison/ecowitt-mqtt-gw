@@ -54,10 +54,10 @@ foreach (range(1,8) as $idx) {
 
 if (array_key_exists('lightning', $source)) {
     $dict['lightning'] = array(
-        'distance'  => get_var('lightning'),
-        'time'      => get_var('lightning_time'),
-        'count'     => get_var('lightning_num'),
-        'battery'   => get_var('wh57batt'),
+        'distance'  => (double) get_var('lightning'),
+        'time'      => (get_var('lightning_time') !== '') ?: 'none',
+        'count'     => (int) get_var('lightning_num'),
+        'battery'   => (int) get_var('wh57batt'),
     );
 }
 
@@ -87,9 +87,9 @@ $dict['solar'] = array(
 );
 
 $dict['station'] = array(
-    'battery'   => (int) get_var('wh65batt'),
+    'battery'     => (int)    get_var('wh65batt'),
     'temperature' => (double) get_var('tempf', false, true, 'fahrenheit2celsius'),
-    'humidity'  => (int) get_var('humidity'),
+    'humidity'    => (int)    get_var('humidity'),
 );
 
 $dict['pressure'] = array(
@@ -148,11 +148,11 @@ function get_var(string $key, $source = false, bool $convert = false, string $co
         }
 
         if ($convert_type === 'mph2kmh') {
-            return  ($return_value / 1.609);
+            return  ($return_value / 1.609344);
         }
 
         if ($convert_type === 'inHg2Pa') {
-            return ($return_value * 33.86388);
+            return ($return_value * 33.8638816);
         }
 
         if ($convert_type === 'in2mm') {
