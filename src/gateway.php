@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 
 const CONVERT_BARBARIAN_UNITS = true;
 const MQTT_TOPIC_SEPARATOR = '/';
+date_default_timezone_set('Europe/Berlin');
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -47,6 +48,14 @@ function get_var(string $key, $source = false, bool $convert = false, string $co
 
         if ($convert_type === 'in2mm') {
             return ($return_value * 25.4);
+        }
+
+        if ($convert_type === 'ts2utc') {
+            return date('c', $return_value);
+        }
+
+        if ($convert_type === 'ts2localtime') {
+            return date('d.m.Y H:i:s', $return_value);
         }
     }
 
@@ -94,7 +103,10 @@ foreach (range(1,8) as $idx) {
 if (array_key_exists('lightning', $source)) {
     $dict['lightning'] = array(
         'distance'  => (double) get_var('lightning'),
-        'time'      => (get_var('lightning_time') !== '') ?: (double) 0,
+        'time_ts'   => (get_var('lightning_time') !== '') ? (int) get_var('lightning_time') : (double) 0,
+        'time_formatted'  => (get_var('lightning_time') !== '')
+            ? get_var('lightning_time', false, true, 'ts2localtime')
+            : 'none',
         'count'     => (int) get_var('lightning_num'),
         'battery'   => (int) get_var('wh57batt'),
     );
@@ -168,7 +180,7 @@ foreach ($dict as $subtopic => $subdevice) {
                 0);
         }
     } else {
-        $mqtt->publish($topic. MQTT_TOPIC_SEPARATOR . $subtopic, json_encode($subdevice, JSON_PRETTY_PRINT), 0);
+        $mqtt->publish($topic. MQTT_TOPIC_SEPARATOR . $subtopic, $subdevice, 0);
     }
 
 }
